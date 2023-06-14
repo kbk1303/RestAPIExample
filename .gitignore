@@ -364,3 +364,4 @@ FodyWeavers.xsd
 
 # appsettings.json - contains databse information
 appsettings.json
+appsettings.Development.json
