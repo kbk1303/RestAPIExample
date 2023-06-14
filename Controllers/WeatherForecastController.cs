@@ -39,7 +39,7 @@ namespace RestAPIExample.Controllers
 
         private List<WeatherForecast?>? AllForecasts()
         {
-            List<WeatherForecast?> forecasts = new();
+            List<WeatherForecast?>? forecasts = new();
             foreach (ModelWeatherForecast? mfc in _dalManager.FetchWeatherForecasts()!)
             {
                 forecasts.Add(new WeatherForecast() { Date = mfc?.Date, Summary = mfc?.Summary, TemperatureC = mfc?.TemperatureC, TemperatureF = mfc?.TemperatureF });

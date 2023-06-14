@@ -14,26 +14,23 @@ namespace RestAPIExample.Models.Manager
         {
             List<ModelWeatherForecast> weatherForecasts = new();
 
-            using(NpgsqlConnection conn = new NpgsqlConnection(_configuration.GetConnectionString("Database")))
+            using (NpgsqlConnection conn = new(_configuration.GetConnectionString("Database")))
             {
                 try
                 {
                     conn.Open();
-                    using (NpgsqlCommand command = new NpgsqlCommand("select * from read_all_weather_data()", conn))
+                    using NpgsqlCommand command = new("select * from read_all_weather_data()", conn);
+                    using NpgsqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
                     {
-                        using(NpgsqlDataReader reader = command.ExecuteReader())
+                        weatherForecasts.Add(new ModelWeatherForecast()
                         {
-                         
-                            while(reader.Read())
-                            {
-                                weatherForecasts.Add(new ModelWeatherForecast() {   
-                                    Date = (DateTime)reader["received_date"],
-                                    TemperatureC = (int)reader["temp_celcius"],
-                                    TemperatureF = (int)reader["temp_farenheit"],
-                                    Summary = (string)reader["summary"]
-                                });
-                            }
-                        }
+                            Date = (DateTime)reader["received_date"],
+                            TemperatureC = (int)reader["temp_celcius"],
+                            TemperatureF = (int)reader["temp_farenheit"],
+                            Summary = (string)reader["summary"]
+                        });
                     }
 
                 }
@@ -44,15 +41,6 @@ namespace RestAPIExample.Models.Manager
                
 
             }
-            /*
-            return Enumerable.Range(1, 1).Select(index => new ModelWeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = "Cold"
-            })
-            .ToArray();
-            */
             return weatherForecasts;
         }
     }
