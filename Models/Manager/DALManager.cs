@@ -14,7 +14,7 @@ namespace RestAPIExample.Models.Manager
         {
             List<ModelWeatherForecast> weatherForecasts = new();
 
-            using (NpgsqlConnection conn = new(_configuration.GetConnectionString("Database")))
+            using (NpgsqlConnection conn = new(_configuration.GetConnectionString("Weather_Database")))
             {
                 try
                 {
